@@ -140,10 +140,12 @@ export const adjustTablePositions = ({
     relationships: inputRelationships,
     tables: inputTables,
     mode = 'all',
+    idsToUpdate = undefined
 }: {
     tables: DBTable[];
     relationships: DBRelationship[];
-    mode?: 'all' | 'perSchema';
+    mode?: 'all' | 'perSchema' | 'byId';
+    idsToUpdate?: string[];
 }): DBTable[] => {
     const tables = deepCopy(inputTables);
     const relationships = deepCopy(inputRelationships);
@@ -301,6 +303,12 @@ export const adjustTablePositions = ({
 
         // Adjust positions for each schema group
         Object.values(tablesBySchema).forEach(adjustPositionsForTables);
+    } else if (mode === 'byId') {
+        if (idsToUpdate == null) {
+            throw new Error('idsToUpdate is required when mode is byId');
+        }
+
+        adjustPositionsForTables(tables.filter((table) => idsToUpdate.includes(table.id)));
     } else {
         // Adjust positions for all tables
         adjustPositionsForTables(tables);

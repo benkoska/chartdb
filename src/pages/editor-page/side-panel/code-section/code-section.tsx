@@ -12,12 +12,13 @@ import { configuration, languageDef } from "./language";
 import { generateDBML, parseCode } from "./compiler";
 import { useThrottleFn } from "react-use";
 import { DBField } from "@/lib/domain/db-field";
-import { DBTable } from "@/lib/domain/db-table";
+import { adjustTablePositions, DBTable, shouldShowTablesBySchemaFilter } from "@/lib/domain/db-table";
+import { findOverlappingTables } from "../../canvas/canvas-utils";
 
 export interface CodeSectionProps {}
 
 export const CodeSection: React.FC<CodeSectionProps> = () => {
-	const { tables, databaseType, updateTable, createTable } = useChartDB();
+	const { tables, databaseType, updateTable, createTable, updateTablesState, filteredSchemas, relationships } = useChartDB();
 	const [code, setCode] = useState(() => generateDBML(tables));
 
 	const monaco = useMonaco();
@@ -50,6 +51,21 @@ export const CodeSection: React.FC<CodeSectionProps> = () => {
 					isView: false,
 					createdAt: Date.now(),
 				})
+				.then((newTable) => {
+					const newTables = adjustTablePositions({
+						relationships,
+						tables: tables.filter((table) =>
+							shouldShowTablesBySchemaFilter(table, filteredSchemas)
+						),
+						mode: 'byId',
+						idsToUpdate: [newTable.id]
+					});
+
+					updateTable(newTable.id, {
+						x: newTables[0].x,
+						y: newTables[0].y
+					})
+				});
 			}
 		}
 	}
