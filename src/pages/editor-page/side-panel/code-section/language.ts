@@ -1,4 +1,4 @@
-import { dataTypeRegex, dataTypes, typeAlias } from './compiler';
+import { dataTypes, typeAlias } from './compiler';
 
 // This config defines the editor's view.
 export const options = {
@@ -8,15 +8,14 @@ export const options = {
     fontSize: 12,
 };
 
-console.log(dataTypeRegex(dataTypes[0]));
-
 // This config defines how the language is displayed in the editor.
 export const languageDef = {
     defaultToken: '',
     number: /\d+(\.\d+)?/,
     keywords: [
         'Table',
-        'Ref',
+        'Rel',
+        'N',
         ...Object.keys(typeAlias),
         ...dataTypes.map((type) => type.name),
         'primary key',
