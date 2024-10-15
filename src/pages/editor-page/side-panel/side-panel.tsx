@@ -111,10 +111,8 @@ export const SidePanel: React.FC<SidePanelProps> = () => {
                                     'side_panel.dependencies_section.dependencies'
                                 )}
                             </SelectItem>
-							<SelectItem value="code">
-                                {t(
-                                    'side_panel.code_section.code'
-                                )}
+                            <SelectItem value="code">
+                                {t('side_panel.code_section.code')}
                             </SelectItem>
                         </SelectGroup>
                     </SelectContent>
@@ -127,8 +125,8 @@ export const SidePanel: React.FC<SidePanelProps> = () => {
             ) : selectedSidebarSection == 'dependencies' ? (
                 <DependenciesSection />
             ) : (
-				<CodeSection />
-			)}
+                <CodeSection />
+            )}
         </aside>
     );
 };

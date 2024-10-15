@@ -36,10 +36,7 @@ import { useLocalConfig } from '@/hooks/use-local-config';
 import { DiagramName } from './diagram-name';
 import { LastSaved } from './last-saved';
 
-const languageMetadatas = [
-	enMetadata,
-	deMetadata
-]
+const languageMetadatas = [enMetadata, deMetadata];
 
 export interface TopNavbarProps {}
 
@@ -97,14 +94,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = () => {
 
     const openChartDBIO = useCallback(() => {
         window.location.href = 'https://chartdb.io';
-    }, []);
-
-    const openJoinDiscord = useCallback(() => {
-        window.open('https://discord.gg/QeFwyWSKwC', '_blank');
-    }, []);
-
-    const openCalendly = useCallback(() => {
-        window.open('https://calendly.com/fishner/15min', '_blank');
     }, []);
 
     const exportSQL = useCallback(
@@ -565,21 +554,23 @@ export const TopNavbar: React.FC<TopNavbarProps> = () => {
                                         {t('menu.view.change_language')}
                                     </MenubarSubTrigger>
                                     <MenubarSubContent>
-										{
-											languageMetadatas.map((metadata, index) => (
-												<MenubarCheckboxItem
-													onClick={() =>
-														changeLanguage(metadata.code)
-													}
-													checked={
-														i18n.language === metadata.code
-													}
-												>
-													{metadata.name}
-												</MenubarCheckboxItem>
-
-											))
-										}
+                                        {languageMetadatas.map(
+                                            (metadata, index) => (
+                                                <MenubarCheckboxItem
+                                                    onClick={() =>
+                                                        changeLanguage(
+                                                            metadata.code
+                                                        )
+                                                    }
+                                                    checked={
+                                                        i18n.language ===
+                                                        metadata.code
+                                                    }
+                                                >
+                                                    {metadata.name}
+                                                </MenubarCheckboxItem>
+                                            )
+                                        )}
                                     </MenubarSubContent>
                                 </MenubarSub>
                             </MenubarContent>

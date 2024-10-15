@@ -1,7 +1,11 @@
 import { emptyFn } from '@/lib/utils';
 import { createContext } from 'react';
 
-export type SidebarSection = 'tables' | 'relationships' | 'dependencies' | 'code';
+export type SidebarSection =
+    | 'tables'
+    | 'relationships'
+    | 'dependencies'
+    | 'code';
 
 export interface LayoutContext {
     openedTableInSidebar: string | undefined;

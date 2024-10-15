@@ -185,9 +185,9 @@ export const en = {
                     description: 'Create a view to get started',
                 },
             },
-			code_section: {
-				code: "Code"
-			}
+            code_section: {
+                code: 'Code',
+            },
         },
 
         toolbar: {
