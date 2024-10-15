@@ -14,7 +14,6 @@ import { ImportDatabaseDialog } from '@/dialogs/import-database-dialog/import-da
 import type { TableSchemaDialogProps } from '@/dialogs/table-schema-dialog/table-schema-dialog';
 import { TableSchemaDialog } from '@/dialogs/table-schema-dialog/table-schema-dialog';
 import { emptyFn } from '@/lib/utils';
-import { StarUsDialog } from '@/dialogs/star-us-dialog/star-us-dialog';
 import type { ExportImageDialogProps } from '@/dialogs/export-image-dialog/export-image-dialog';
 import { ExportImageDialog } from '@/dialogs/export-image-dialog/export-image-dialog';
 
@@ -24,9 +23,7 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({
     const [openNewDiagramDialog, setOpenNewDiagramDialog] = useState(false);
     const [openOpenDiagramDialog, setOpenOpenDiagramDialog] = useState(false);
 
-    const [openCreateRelationshipDialog, setOpenCreateRelationshipDialog] =
-        useState(false);
-    const [openStarUsDialog, setOpenStarUsDialog] = useState(false);
+    const [openCreateRelationshipDialog, setOpenCreateRelationshipDialog] = useState(false);
 
     // Export image dialog
     const [openExportImageDialog, setOpenExportImageDialog] = useState(false);
@@ -122,8 +119,6 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({
                     setOpenImportDatabaseDialog(false),
                 openTableSchemaDialog: openTableSchemaDialogHandler,
                 closeTableSchemaDialog: () => setOpenTableSchemaDialog(false),
-                openStarUsDialog: () => setOpenStarUsDialog(true),
-                closeStarUsDialog: () => setOpenStarUsDialog(false),
                 closeExportImageDialog: () => setOpenExportImageDialog(false),
                 openExportImageDialog: openExportImageDialogHandler,
             }}
@@ -147,7 +142,6 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({
                 dialog={{ open: openTableSchemaDialog }}
                 {...tableSchemaDialogParams}
             />
-            <StarUsDialog dialog={{ open: openStarUsDialog }} />
             <ExportImageDialog
                 dialog={{ open: openExportImageDialog }}
                 {...exportImageDialogParams}

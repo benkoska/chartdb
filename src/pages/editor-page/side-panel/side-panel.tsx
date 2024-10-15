@@ -16,6 +16,7 @@ import type { SelectBoxOption } from '@/components/select-box/select-box';
 import { SelectBox } from '@/components/select-box/select-box';
 import { useChartDB } from '@/hooks/use-chartdb';
 import { DependenciesSection } from './dependencies-section/dependencies-section';
+import { CodeSection } from './code-section/code-section';
 
 export interface SidePanelProps {}
 
@@ -110,6 +111,11 @@ export const SidePanel: React.FC<SidePanelProps> = () => {
                                     'side_panel.dependencies_section.dependencies'
                                 )}
                             </SelectItem>
+							<SelectItem value="code">
+                                {t(
+                                    'side_panel.code_section.code'
+                                )}
+                            </SelectItem>
                         </SelectGroup>
                     </SelectContent>
                 </Select>
@@ -118,9 +124,11 @@ export const SidePanel: React.FC<SidePanelProps> = () => {
                 <TablesSection />
             ) : selectedSidebarSection === 'relationships' ? (
                 <RelationshipsSection />
-            ) : (
+            ) : selectedSidebarSection == 'dependencies' ? (
                 <DependenciesSection />
-            )}
+            ) : (
+				<CodeSection />
+			)}
         </aside>
     );
 };

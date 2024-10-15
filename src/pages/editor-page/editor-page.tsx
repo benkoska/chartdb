@@ -52,7 +52,7 @@ const EditorPageComponent: React.FC = () => {
     const { openSelectSchema, showSidePanel } = useLayout();
     const { resetRedoStack, resetUndoStack } = useRedoUndoStack();
     const { showLoader, hideLoader } = useFullScreenLoader();
-    const { openCreateDiagramDialog, openStarUsDialog } = useDialog();
+    const { openCreateDiagramDialog } = useDialog();
     const { diagramId } = useParams<{ diagramId: string }>();
     const { config, updateConfig } = useConfig();
     const navigate = useNavigate();
@@ -61,8 +61,6 @@ const EditorPageComponent: React.FC = () => {
     const {
         hideMultiSchemaNotification,
         setHideMultiSchemaNotification,
-        starUsDialogLastOpen,
-        setStarUsDialogLastOpen,
         githubRepoOpened,
     } = useLocalConfig();
     const { toast } = useToast();
@@ -116,27 +114,6 @@ const EditorPageComponent: React.FC = () => {
         showLoader,
         currentDiagram?.id,
         updateConfig,
-    ]);
-
-    useEffect(() => {
-        if (!currentDiagram?.id || githubRepoOpened) {
-            return;
-        }
-
-        if (
-            new Date().getTime() - starUsDialogLastOpen >
-            1000 * 60 * 60 * 24 * SHOW_STAR_US_AGAIN_AFTER_DAYS
-        ) {
-            const lastOpen = new Date().getTime();
-            setStarUsDialogLastOpen(lastOpen);
-            setTimeout(openStarUsDialog, OPEN_STAR_US_AFTER_SECONDS * 1000);
-        }
-    }, [
-        currentDiagram?.id,
-        githubRepoOpened,
-        openStarUsDialog,
-        setStarUsDialogLastOpen,
-        starUsDialogLastOpen,
     ]);
 
     const lastDiagramId = useRef<string>('');

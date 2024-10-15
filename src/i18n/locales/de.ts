@@ -327,14 +327,6 @@ export const de: LanguageTranslation = {
             confirm: 'Ändern',
         },
 
-        star_us_dialog: {
-            title: 'Hilf uns, uns zu verbessern!',
-            description:
-                'Gefällt Ihnen ChartDB? Lassen Sie es uns wissen und helfen Sie uns, ChartDB zu verbessern!',
-            close: 'Nicht jetzt',
-            confirm: 'Natürlich!',
-        },
-
         relationship_type: {
             one_to_one: 'Ein zu Eins (1:1)',
             one_to_many: 'Ein zu Viele (1:n)',

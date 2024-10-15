@@ -185,6 +185,9 @@ export const en = {
                     description: 'Create a view to get started',
                 },
             },
+			code_section: {
+				code: "Code"
+			}
         },
 
         toolbar: {
@@ -318,14 +321,6 @@ export const en = {
             description: 'Update table "{{tableName}}" schema',
             cancel: 'Cancel',
             confirm: 'Change',
-        },
-
-        star_us_dialog: {
-            title: 'Help us improve!',
-            description:
-                "Would you like to star us on GitHub? It's just a click away!",
-            close: 'Not now',
-            confirm: 'Of course!',
         },
 
         relationship_type: {
