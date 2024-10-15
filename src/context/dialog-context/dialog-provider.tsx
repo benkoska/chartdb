@@ -23,7 +23,8 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({
     const [openNewDiagramDialog, setOpenNewDiagramDialog] = useState(false);
     const [openOpenDiagramDialog, setOpenOpenDiagramDialog] = useState(false);
 
-    const [openCreateRelationshipDialog, setOpenCreateRelationshipDialog] = useState(false);
+    const [openCreateRelationshipDialog, setOpenCreateRelationshipDialog] =
+        useState(false);
 
     // Export image dialog
     const [openExportImageDialog, setOpenExportImageDialog] = useState(false);

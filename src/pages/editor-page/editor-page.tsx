@@ -35,9 +35,6 @@ import { DialogProvider } from '@/context/dialog-context/dialog-provider';
 import { KeyboardShortcutsProvider } from '@/context/keyboard-shortcuts-context/keyboard-shortcuts-provider';
 import { Spinner } from '@/components/spinner/spinner';
 
-const OPEN_STAR_US_AFTER_SECONDS = 30;
-const SHOW_STAR_US_AGAIN_AFTER_DAYS = 1;
-
 export const EditorDesktopLayoutLazy = React.lazy(
     () => import('./editor-desktop-layout')
 );

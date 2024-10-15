@@ -39,7 +39,6 @@ export interface DialogContext {
     ) => void;
     closeTableSchemaDialog: () => void;
 
-
     // Export image dialog
     openExportImageDialog: (
         params: Omit<ExportImageDialogProps, 'dialog'>
