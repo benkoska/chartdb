@@ -3,7 +3,7 @@ import type { ExportImageContext, ImageType } from './export-image-context';
 import { exportImageContext } from './export-image-context';
 import { toJpeg, toPng, toSvg } from 'html-to-image';
 import { useReactFlow } from '@xyflow/react';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useFullScreenLoader } from '@/hooks/use-full-screen-spinner';
 
 export const ExportImageProvider: React.FC<React.PropsWithChildren> = ({
@@ -11,7 +11,7 @@ export const ExportImageProvider: React.FC<React.PropsWithChildren> = ({
 }) => {
     const { hideLoader, showLoader } = useFullScreenLoader();
     const { setNodes, getViewport } = useReactFlow();
-    const { diagramName } = useChartDB();
+    const { diagramName } = useSchemaX();
 
     const downloadImage = useCallback(
         (dataUrl: string, type: ImageType) => {

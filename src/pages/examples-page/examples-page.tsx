@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import ChartDBLogo from '@/assets/logo-light.png';
-import ChartDBDarkLogo from '@/assets/logo-dark.png';
+import SchemaXLogo from '@/assets/logo_light.svg';
+import SchemaXDarkLogo from '@/assets/logo_dark.svg';
 import { examples } from './examples-data/examples-data';
 import { ExampleCard } from './example-card';
 import { useTheme } from '@/hooks/use-theme';
@@ -11,7 +11,7 @@ import { ThemeProvider } from '@/context/theme-context/theme-provider';
 const ExamplesPageComponent: React.FC = () => {
     const { effectiveTheme } = useTheme();
     useEffect(() => {
-        document.title = 'ChartDB - Example Database Diagrams & Schemas';
+        document.title = 'SchemaX - Example Database Diagrams & Schemas';
     }, []);
 
     return (
@@ -20,17 +20,17 @@ const ExamplesPageComponent: React.FC = () => {
                 <div className="flex flex-1 justify-start gap-x-3">
                     <div className="flex items-center font-primary">
                         <a
-                            href="https://chartdb.io"
+                            href="https://schemax.io"
                             className="cursor-pointer"
                             rel="noreferrer"
                         >
                             <img
                                 src={
                                     effectiveTheme === 'light'
-                                        ? ChartDBLogo
-                                        : ChartDBDarkLogo
+                                        ? SchemaXLogo
+                                        : SchemaXDarkLogo
                                 }
-                                alt="chartDB"
+                                alt="schemaX"
                                 className="h-4 max-w-fit"
                             />
                         </a>
@@ -43,7 +43,7 @@ const ExamplesPageComponent: React.FC = () => {
                 <h1 className="font-primary text-2xl font-bold">Examples</h1>
                 <h2 className="mt-1 font-primary text-base text-muted-foreground">
                     A collection of examples to help you get started with
-                    ChartDB.
+                    SchemaX.
                 </h2>
                 <div className="mt-6 grid grid-flow-row grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {examples.map((example) => (

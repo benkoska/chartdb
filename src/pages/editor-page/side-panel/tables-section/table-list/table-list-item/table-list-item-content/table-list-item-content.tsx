@@ -10,7 +10,7 @@ import {
 import { Separator } from '@/components/separator/separator';
 import type { DBTable } from '@/lib/domain/db-table';
 import type { DBField } from '@/lib/domain/db-field';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { TableField } from './table-field/table-field';
 import { TableIndex } from './table-index/table-index';
 import type { DBIndex } from '@/lib/domain/db-index';
@@ -48,7 +48,7 @@ export const TableListItemContent: React.FC<TableListItemContentProps> = ({
         removeIndex,
         updateIndex,
         updateTable,
-    } = useChartDB();
+    } = useSchemaX();
     const { t } = useTranslation();
     const { color } = table;
     const [selectedItems, setSelectedItems] = React.useState<

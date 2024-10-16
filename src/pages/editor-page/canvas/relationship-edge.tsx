@@ -3,7 +3,7 @@ import type { Edge, EdgeProps } from '@xyflow/react';
 import { getSmoothStepPath, Position, useReactFlow } from '@xyflow/react';
 import type { DBRelationship } from '@/lib/domain/db-relationship';
 import { RIGHT_HANDLE_ID_PREFIX } from './table-node/table-node-field';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useLayout } from '@/hooks/use-layout';
 import { cn } from '@/lib/utils';
 import { getCardinalityMarkerId } from './canvas-utils';
@@ -30,7 +30,7 @@ export const RelationshipEdge: React.FC<EdgeProps<RelationshipEdgeType>> = ({
     const { getInternalNode, getEdge } = useReactFlow();
     const { openRelationshipFromSidebar, selectSidebarSection } = useLayout();
 
-    const { relationships } = useChartDB();
+    const { relationships } = useSchemaX();
 
     const relationship = data?.relationship;
 
@@ -153,7 +153,7 @@ export const RelationshipEdge: React.FC<EdgeProps<RelationshipEdgeType>> = ({
     return (
         <>
             <path
-				key={`${id}-${sourceMarker}-${targetMarker}`}
+                key={`${id}-${sourceMarker}-${targetMarker}`}
                 id={id}
                 d={edgePath}
                 markerStart={`url(#${sourceMarker})`}
@@ -161,7 +161,7 @@ export const RelationshipEdge: React.FC<EdgeProps<RelationshipEdgeType>> = ({
                 fill="none"
                 className={cn([
                     'react-flow__edge-path',
-                    `!stroke-2 ${selected ? '!stroke-blue-600' : '!stroke-slate-400'}`
+                    `!stroke-2 ${selected ? '!stroke-sky-600' : '!stroke-slate-400'}`,
                 ])}
                 onClick={(e) => {
                     if (e.detail === 2) {

@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { EllipsisVertical, CircleDotDashed, Trash2 } from 'lucide-react';
 import { ListItemHeaderButton } from '../../../../list-item-header-button/list-item-header-button';
 import { useReactFlow } from '@xyflow/react';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -24,7 +24,7 @@ export interface DependencyListItemHeaderProps {
 export const DependencyListItemHeader: React.FC<
     DependencyListItemHeaderProps
 > = ({ dependency }) => {
-    const { removeDependency, getTable } = useChartDB();
+    const { removeDependency, getTable } = useSchemaX();
     const { fitView, deleteElements, setEdges } = useReactFlow();
     const { t } = useTranslation();
     const { hideSidePanel } = useLayout();

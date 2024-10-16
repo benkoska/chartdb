@@ -6,13 +6,13 @@ import type { Diagram } from '@/lib/domain/diagram';
 import type { DBTable } from '@/lib/domain/db-table';
 import type { DBRelationship } from '@/lib/domain/db-relationship';
 import { determineCardinalities } from '@/lib/domain/db-relationship';
-import type { ChartDBConfig } from '@/lib/domain/config';
+import type { SchemaXConfig } from '@/lib/domain/config';
 import type { DBDependency } from '@/lib/domain/db-dependency';
 
 export const StorageProvider: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
-    const db = new Dexie('ChartDB') as Dexie & {
+    const db = new Dexie('SchemaX') as Dexie & {
         diagrams: EntityTable<
             Diagram,
             'id' // primary key "id" (for the typings only)
@@ -30,7 +30,7 @@ export const StorageProvider: React.FC<React.PropsWithChildren> = ({
             'id' // primary key "id" (for the typings only)
         >;
         config: EntityTable<
-            ChartDBConfig & { id: number },
+            SchemaXConfig & { id: number },
             'id' // primary key "id" (for the typings only)
         >;
     };
@@ -136,13 +136,13 @@ export const StorageProvider: React.FC<React.PropsWithChildren> = ({
     });
 
     const getConfig: StorageContext['getConfig'] = async (): Promise<
-        ChartDBConfig | undefined
+        SchemaXConfig | undefined
     > => {
         return await db.config.get(1);
     };
 
     const updateConfig: StorageContext['updateConfig'] = async (
-        config: Partial<ChartDBConfig>
+        config: Partial<SchemaXConfig>
     ) => {
         await db.config.update(1, config);
     };

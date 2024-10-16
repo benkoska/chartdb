@@ -12,6 +12,7 @@ import type {
     NodeDimensionChange,
     OnEdgesChange,
     OnNodesChange,
+    OnSelectionChangeParams,
 } from '@xyflow/react';
 import {
     ReactFlow,
@@ -29,7 +30,7 @@ import type { TableNodeType } from './table-node/table-node';
 import { MIN_TABLE_SIZE, TableNode } from './table-node/table-node';
 import type { RelationshipEdgeType } from './relationship-edge';
 import { RelationshipEdge } from './relationship-edge';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import {
     LEFT_HANDLE_ID_PREFIX,
     TARGET_ID_PREFIX,
@@ -65,7 +66,7 @@ import {
 } from './canvas-utils';
 import type { Graph } from '@/lib/graph';
 import { createGraph, removeVertex } from '@/lib/graph';
-import type { ChartDBEvent } from '@/context/chartdb-context/chartdb-context';
+import type { SchemaXEvent } from '@/context/schemax-context/schemax-context';
 import { debounce } from '@/lib/utils';
 import type { DependencyEdgeType } from './dependency-edge';
 import { DependencyEdge } from './dependency-edge';
@@ -127,7 +128,8 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
         filteredSchemas,
         events,
         dependencies,
-    } = useChartDB();
+        updateRelationship,
+    } = useSchemaX();
     const { showSidePanel } = useLayout();
     const { effectiveTheme } = useTheme();
     const { scrollAction, showDependenciesOnCanvas } = useLocalConfig();
@@ -136,6 +138,9 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
     const nodeTypes = useMemo(() => ({ table: TableNode }), []);
     const [highlightOverlappingTables, setHighlightOverlappingTables] =
         useState(false);
+
+    const selectedNodes = useRef<string[]>([]);
+    const selectedEdges = useRef<{ type: string; id: string }[]>([]);
 
     const [isInitialLoadingNodes, setIsInitialLoadingNodes] = useState(true);
     const [overlapGraph, setOverlapGraph] =
@@ -531,7 +536,7 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
     );
 
     const eventConsumer = useCallback(
-        (event: ChartDBEvent) => {
+        (event: SchemaXEvent) => {
             let newOverlappingGraph: Graph<string> = overlapGraph;
             if (event.action === 'add_tables') {
                 for (const table of event.data.tables) {
@@ -664,6 +669,39 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
         setTimeout(() => setHighlightOverlappingTables(false), 600);
     }, []);
 
+    const onSelectionChangeHandler = useCallback(
+        ({ nodes, edges }: OnSelectionChangeParams) => {
+            selectedNodes.current = nodes.map((node) => node.id);
+            selectedEdges.current = edges.map((edge) => ({
+                type: edge.type!,
+                id: edge.id,
+            }));
+        },
+        []
+    );
+
+    useEffect(() => {
+        const keyboardHandler = (event: KeyboardEvent) => {
+            if (event.key >= '1' && event.key <= '4') {
+                const number = parseInt(event.key) - 1;
+                selectedEdges.current.forEach((edge) => {
+                    if (edge.type == 'relationship-edge') {
+                        updateRelationship(edge.id, {
+                            sourceCardinality: number >= 2 ? 'many' : 'one',
+                            targetCardinality: number % 2 == 1 ? 'many' : 'one',
+                        });
+                    }
+                });
+            }
+        };
+
+        window.addEventListener('keydown', keyboardHandler);
+
+        return () => {
+            window.removeEventListener('keydown', keyboardHandler);
+        };
+    }, [updateRelationship]);
+
     return (
         <CanvasContextMenu>
             <div className="relative flex h-full">
@@ -680,6 +718,7 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
                     proOptions={{
                         hideAttribution: true,
                     }}
+                    onSelectionChange={onSelectionChangeHandler}
                     fitView={false}
                     nodeTypes={nodeTypes}
                     edgeTypes={edgeTypes}
@@ -753,7 +792,7 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
                         >
                             <Badge
                                 variant="default"
-                                className="bg-blue-600 text-white"
+                                className="bg-sky-600 text-white"
                             >
                                 {t('loading_diagram')}
                             </Badge>
@@ -770,7 +809,7 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
                             className="!shadow-none"
                         >
                             <Button
-                                className="size-11 bg-blue-600 p-2 hover:bg-blue-500"
+                                className="size-11 bg-sky-600 p-2 hover:bg-sky-500"
                                 onClick={showSidePanel}
                             >
                                 <Pencil />

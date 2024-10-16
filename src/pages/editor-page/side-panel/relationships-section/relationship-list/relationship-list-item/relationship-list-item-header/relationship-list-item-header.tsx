@@ -9,7 +9,7 @@ import {
 import { ListItemHeaderButton } from '../../../../list-item-header-button/list-item-header-button';
 import type { DBRelationship } from '@/lib/domain/db-relationship';
 import { useReactFlow } from '@xyflow/react';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useClickAway, useKeyPressEvent } from 'react-use';
 import {
     DropdownMenu,
@@ -32,7 +32,7 @@ export interface RelationshipListItemHeaderProps {
 export const RelationshipListItemHeader: React.FC<
     RelationshipListItemHeaderProps
 > = ({ relationship }) => {
-    const { updateRelationship, removeRelationship } = useChartDB();
+    const { updateRelationship, removeRelationship } = useSchemaX();
     const { fitView, deleteElements, setEdges } = useReactFlow();
     const { t } = useTranslation();
     const { hideSidePanel } = useLayout();

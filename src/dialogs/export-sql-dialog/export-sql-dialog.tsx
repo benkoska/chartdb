@@ -11,7 +11,7 @@ import {
 } from '@/components/dialog/dialog';
 import { Label } from '@/components/label/label';
 import { Spinner } from '@/components/spinner/spinner';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useDialog } from '@/hooks/use-dialog';
 import {
     exportBaseSQL,
@@ -33,7 +33,7 @@ export const ExportSQLDialog: React.FC<ExportSQLDialogProps> = ({
     targetDatabaseType,
 }) => {
     const { closeExportSQLDialog } = useDialog();
-    const { currentDiagram } = useChartDB();
+    const { currentDiagram } = useSchemaX();
     const { t } = useTranslation();
     const [script, setScript] = React.useState<string>();
     const [error, setError] = React.useState<boolean>(false);
@@ -72,9 +72,9 @@ export const ExportSQLDialog: React.FC<ExportSQLDialogProps> = ({
                             components={[
                                 <a
                                     key={0}
-                                    href="mailto:chartdb.io@gmail.com"
+                                    href="mailto:schemax.io@gmail.com"
                                     target="_blank"
-                                    className="text-blue-600 hover:underline"
+                                    className="text-sky-600 hover:underline"
                                     rel="noreferrer"
                                 />,
                             ]}
@@ -86,10 +86,10 @@ export const ExportSQLDialog: React.FC<ExportSQLDialogProps> = ({
                             components={[
                                 <a
                                     key={0}
-                                    href="https://github.com/chartdb/chartdb"
+                                    href="https://github.com/schemax/schemax"
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="text-blue-600 hover:underline"
+                                    className="text-sky-600 hover:underline"
                                 />,
                             ]}
                         />

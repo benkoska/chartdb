@@ -12,7 +12,7 @@ import {
 import { ListItemHeaderButton } from '@/pages/editor-page/side-panel/list-item-header-button/list-item-header-button';
 import type { DBTable } from '@/lib/domain/db-table';
 import { Input } from '@/components/input/input';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useClickAway, useKeyPressEvent } from 'react-use';
 import {
     DropdownMenu,
@@ -43,7 +43,7 @@ export const TableListItemHeader: React.FC<TableListItemHeaderProps> = ({
         createField,
         schemas,
         filteredSchemas,
-    } = useChartDB();
+    } = useSchemaX();
     const { openTableSchemaDialog } = useDialog();
     const { t } = useTranslation();
     const { fitView, setNodes } = useReactFlow();

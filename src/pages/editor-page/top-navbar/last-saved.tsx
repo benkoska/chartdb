@@ -1,6 +1,6 @@
 import React from 'react';
 import TimeAgo from 'timeago-react';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { Badge } from '@/components/badge/badge';
 import {
     Tooltip,
@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 export interface LastSavedProps {}
 
 export const LastSaved: React.FC<LastSavedProps> = () => {
-    const { currentDiagram } = useChartDB();
+    const { currentDiagram } = useSchemaX();
     const { t } = useTranslation();
     const { isMd: isDesktop } = useBreakpoint('md');
     return (

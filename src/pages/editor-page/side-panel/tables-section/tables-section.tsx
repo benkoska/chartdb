@@ -6,7 +6,7 @@ import { Input } from '@/components/input/input';
 
 import type { DBTable } from '@/lib/domain/db-table';
 import { shouldShowTablesBySchemaFilter } from '@/lib/domain/db-table';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useLayout } from '@/hooks/use-layout';
 import { EmptyState } from '@/components/empty-state/empty-state';
 import { ScrollArea } from '@/components/scroll-area/scroll-area';
@@ -22,7 +22,7 @@ import { useDialog } from '@/hooks/use-dialog';
 export interface TablesSectionProps {}
 
 export const TablesSection: React.FC<TablesSectionProps> = () => {
-    const { createTable, tables, filteredSchemas, schemas } = useChartDB();
+    const { createTable, tables, filteredSchemas, schemas } = useSchemaX();
     const { openTableSchemaDialog } = useDialog();
     const viewport = useViewport();
     const { t } = useTranslation();

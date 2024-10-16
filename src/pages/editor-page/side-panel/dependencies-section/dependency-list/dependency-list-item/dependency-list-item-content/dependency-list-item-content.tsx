@@ -4,7 +4,7 @@ import {
     TooltipContent,
     TooltipTrigger,
 } from '@/components/tooltip/tooltip';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import type { DBDependency } from '@/lib/domain/db-dependency';
 import { useReactFlow } from '@xyflow/react';
 import { FileMinus2, FileOutput, Trash2 } from 'lucide-react';
@@ -18,7 +18,7 @@ export interface DependencyListItemContentProps {
 export const DependencyListItemContent: React.FC<
     DependencyListItemContentProps
 > = ({ dependency }) => {
-    const { getTable, removeDependency } = useChartDB();
+    const { getTable, removeDependency } = useSchemaX();
     const { deleteElements } = useReactFlow();
     const { t } = useTranslation();
 

@@ -9,7 +9,7 @@ import { Button } from '@/components/button/button';
 import { KeyRound, Trash2 } from 'lucide-react';
 
 import type { DBField } from '@/lib/domain/db-field';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 
 export const LEFT_HANDLE_ID_PREFIX = 'left_rel_';
 export const RIGHT_HANDLE_ID_PREFIX = 'right_rel_';
@@ -26,7 +26,7 @@ export interface TableNodeFieldProps {
 
 export const TableNodeField: React.FC<TableNodeFieldProps> = React.memo(
     ({ field, focused, tableNodeId, highlighted, visible, isConnectable }) => {
-        const { removeField, relationships } = useChartDB();
+        const { removeField, relationships } = useSchemaX();
         const updateNodeInternals = useUpdateNodeInternals();
         const connection = useConnection();
         const isTarget = useMemo(
@@ -63,7 +63,7 @@ export const TableNodeField: React.FC<TableNodeFieldProps> = React.memo(
         return (
             <div
                 className={`group relative flex h-8 items-center justify-between gap-1 border-t px-3 text-sm last:rounded-b-[6px] hover:bg-slate-100 dark:hover:bg-slate-800 ${
-                    highlighted ? 'bg-blue-100 dark:bg-blue-900' : ''
+                    highlighted ? 'bg-sky-100 dark:bg-sky-900' : ''
                 } transition-all duration-200 ease-in-out ${
                     visible
                         ? 'max-h-8 opacity-100'
@@ -74,13 +74,13 @@ export const TableNodeField: React.FC<TableNodeFieldProps> = React.memo(
                     <>
                         <Handle
                             id={`${RIGHT_HANDLE_ID_PREFIX}${field.id}`}
-                            className={`!h-4 !w-4 !border-2 !bg-blue-600 ${!focused ? '!invisible' : ''}`}
+                            className={`!h-4 !w-4 !border-2 !bg-sky-600 ${!focused ? '!invisible' : ''}`}
                             position={Position.Right}
                             type="source"
                         />
                         <Handle
                             id={`${LEFT_HANDLE_ID_PREFIX}${field.id}`}
-                            className={`!h-4 !w-4 !border-2 !bg-blue-600 ${!focused ? '!invisible' : ''}`}
+                            className={`!h-4 !w-4 !border-2 !bg-sky-600 ${!focused ? '!invisible' : ''}`}
                             position={Position.Left}
                             type="source"
                         />

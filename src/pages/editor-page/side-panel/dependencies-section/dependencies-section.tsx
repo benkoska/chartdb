@@ -3,7 +3,7 @@ import { Button } from '@/components/button/button';
 import { ListCollapse } from 'lucide-react';
 import { Input } from '@/components/input/input';
 import { DependencyList } from './dependency-list/dependency-list';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { EmptyState } from '@/components/empty-state/empty-state';
 import { ScrollArea } from '@/components/scroll-area/scroll-area';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,7 @@ import { useLayout } from '@/hooks/use-layout';
 export interface DependenciesSectionProps {}
 
 export const DependenciesSection: React.FC<DependenciesSectionProps> = () => {
-    const { dependencies, filteredSchemas, getTable } = useChartDB();
+    const { dependencies, filteredSchemas, getTable } = useSchemaX();
     const [filterText, setFilterText] = React.useState('');
     const { closeAllDependenciesInSidebar } = useLayout();
     const { t } = useTranslation();

@@ -15,7 +15,7 @@ export const languageDef = {
     keywords: [
         'Table',
         'Rel',
-		'Indexes',
+        'Indexes',
         'N',
         ...Object.keys(typeAlias),
         ...dataTypes.map((type) => type.name),
@@ -36,8 +36,8 @@ export const languageDef = {
         ],
         numbers: [[/@number/, 'number']],
         strings: [
-            [/\".*\"/, 'string.escape'],
-            [/\'.*\'/, 'string.escape'],
+            [/".*"/, 'string.escape'],
+            [/'.*'/, 'string.escape'],
         ],
         tags: [
             [/^%[a-zA-Z]\w*/, 'tag'],

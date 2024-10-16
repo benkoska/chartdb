@@ -7,14 +7,14 @@ import {
 } from './keyboard-shortcuts';
 import { useHistory } from '@/hooks/use-history';
 import { useDialog } from '@/hooks/use-dialog';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 
 export const KeyboardShortcutsProvider: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
     const { redo, undo } = useHistory();
     const { openOpenDiagramDialog } = useDialog();
-    const { updateDiagramUpdatedAt } = useChartDB();
+    const { updateDiagramUpdatedAt } = useSchemaX();
     useHotkeys(
         keyboardShortcutsForOS[KeyboardShortcutAction.REDO].keyCombination,
         redo,

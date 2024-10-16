@@ -14,7 +14,7 @@ import type { SidebarSection } from '@/context/layout-context/layout-context';
 import { useTranslation } from 'react-i18next';
 import type { SelectBoxOption } from '@/components/select-box/select-box';
 import { SelectBox } from '@/components/select-box/select-box';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { DependenciesSection } from './dependencies-section/dependencies-section';
 import { CodeSection } from './code-section/code-section';
 
@@ -22,7 +22,7 @@ export interface SidePanelProps {}
 
 export const SidePanel: React.FC<SidePanelProps> = () => {
     const { t } = useTranslation();
-    const { schemas, filterSchemas, filteredSchemas } = useChartDB();
+    const { schemas, filterSchemas, filteredSchemas } = useSchemaX();
     const {
         selectSidebarSection,
         selectedSidebarSection,

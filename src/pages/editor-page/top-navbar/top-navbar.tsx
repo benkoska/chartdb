@@ -12,9 +12,9 @@ import {
     MenubarSubTrigger,
     MenubarTrigger,
 } from '@/components/menubar/menubar';
-import { useChartDB } from '@/hooks/use-chartdb';
-import ChartDBLogo from '@/assets/logo-light.png';
-import ChartDBDarkLogo from '@/assets/logo-dark.png';
+import { useSchemaX } from '@/hooks/use-schemax';
+import SchemaXLogo from '@/assets/logo_light.svg';
+import SchemaXDarkLogo from '@/assets/logo_dark.svg';
 import { useDialog } from '@/hooks/use-dialog';
 import { useExportImage } from '@/hooks/use-export-image';
 import { databaseTypeToLabelMap } from '@/lib/databases';
@@ -42,7 +42,7 @@ export interface TopNavbarProps {}
 
 export const TopNavbar: React.FC<TopNavbarProps> = () => {
     const { clearDiagramData, deleteDiagram, updateDiagramUpdatedAt } =
-        useChartDB();
+        useSchemaX();
     const {
         openCreateDiagramDialog,
         openOpenDiagramDialog,
@@ -92,8 +92,8 @@ export const TopNavbar: React.FC<TopNavbarProps> = () => {
         });
     }, [openExportImageDialog]);
 
-    const openChartDBIO = useCallback(() => {
-        window.location.href = 'https://chartdb.io';
+    const openSchemaXIO = useCallback(() => {
+        window.location.href = 'https://schemax.io';
     }, []);
 
     const exportSQL = useCallback(
@@ -128,9 +128,9 @@ export const TopNavbar: React.FC<TopNavbarProps> = () => {
                                     Feel free to use your OPENAI_TOKEN, see the
                                     manual{' '}
                                     <a
-                                        href="https://github.com/chartdb/chartdb"
+                                        href="https://github.com/schemax/schemax"
                                         target="_blank"
-                                        className="text-blue-600 hover:underline"
+                                        className="text-sky-600 hover:underline"
                                         rel="noreferrer"
                                     >
                                         here.
@@ -154,17 +154,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = () => {
         },
         [config?.exportActions, updateConfig, showAlert, openExportSQLDialog]
     );
-
-    const renderStars = useCallback(() => {
-        return (
-            <iframe
-                src={`https://ghbtns.com/github-btn.html?user=chartdb&repo=chartdb&type=star&size=${isDesktop ? 'large' : 'small'}&text=false`}
-                width={isDesktop ? '40' : '25'}
-                height={isDesktop ? '30' : '20'}
-                title="GitHub"
-            ></iframe>
-        );
-    }, [isDesktop]);
 
     const showOrHideSidePanel = useCallback(() => {
         if (isSidePanelShowed) {
@@ -196,18 +185,18 @@ export const TopNavbar: React.FC<TopNavbarProps> = () => {
             <div className="flex flex-1 justify-between gap-x-3 md:justify-normal">
                 <div className="flex py-[10px] font-primary md:items-center md:py-0">
                     <a
-                        href="https://chartdb.io"
+                        href="https://schemax.io"
                         className="cursor-pointer"
                         rel="noreferrer"
                     >
                         <img
                             src={
                                 effectiveTheme === 'light'
-                                    ? ChartDBLogo
-                                    : ChartDBDarkLogo
+                                    ? SchemaXLogo
+                                    : SchemaXDarkLogo
                             }
-                            alt="chartDB"
-                            className="h-4 max-w-fit"
+                            alt="schemaX"
+                            className="h-6 max-w-fit"
                         />
                     </a>
                 </div>
@@ -554,23 +543,22 @@ export const TopNavbar: React.FC<TopNavbarProps> = () => {
                                         {t('menu.view.change_language')}
                                     </MenubarSubTrigger>
                                     <MenubarSubContent>
-                                        {languageMetadatas.map(
-                                            (metadata, index) => (
-                                                <MenubarCheckboxItem
-                                                    onClick={() =>
-                                                        changeLanguage(
-                                                            metadata.code
-                                                        )
-                                                    }
-                                                    checked={
-                                                        i18n.language ===
+                                        {languageMetadatas.map((metadata) => (
+                                            <MenubarCheckboxItem
+                                                key={metadata.code}
+                                                onClick={() =>
+                                                    changeLanguage(
                                                         metadata.code
-                                                    }
-                                                >
-                                                    {metadata.name}
-                                                </MenubarCheckboxItem>
-                                            )
-                                        )}
+                                                    )
+                                                }
+                                                checked={
+                                                    i18n.language ===
+                                                    metadata.code
+                                                }
+                                            >
+                                                {metadata.name}
+                                            </MenubarCheckboxItem>
+                                        ))}
                                     </MenubarSubContent>
                                 </MenubarSub>
                             </MenubarContent>
@@ -580,7 +568,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = () => {
                                 {t('menu.help.help')}
                             </MenubarTrigger>
                             <MenubarContent>
-                                <MenubarItem onClick={openChartDBIO}>
+                                <MenubarItem onClick={openSchemaXIO}>
                                     {t('menu.help.visit_website')}
                                 </MenubarItem>
                             </MenubarContent>
@@ -595,7 +583,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = () => {
                     </div>
                     <div className="hidden flex-1 items-center justify-end gap-2 sm:flex">
                         <LastSaved />
-                        {renderStars()}
                     </div>
                 </>
             ) : (
@@ -606,7 +593,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = () => {
                     <div className="flex items-center">
                         <LastSaved />
                     </div>
-                    <div className="flex items-center">{renderStars()}</div>
                 </div>
             )}
         </nav>

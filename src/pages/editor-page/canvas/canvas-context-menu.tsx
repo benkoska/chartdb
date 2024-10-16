@@ -5,7 +5,7 @@ import {
     ContextMenuTrigger,
 } from '@/components/context-menu/context-menu';
 import { useBreakpoint } from '@/hooks/use-breakpoint';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useDialog } from '@/hooks/use-dialog';
 import { useReactFlow } from '@xyflow/react';
 import React, { useCallback } from 'react';
@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 export const CanvasContextMenu: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
-    const { createTable, filteredSchemas, schemas } = useChartDB();
+    const { createTable, filteredSchemas, schemas } = useSchemaX();
     const { openCreateRelationshipDialog, openTableSchemaDialog } = useDialog();
     const { screenToFlowPosition } = useReactFlow();
     const { t } = useTranslation();

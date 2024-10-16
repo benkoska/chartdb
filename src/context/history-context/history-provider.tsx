@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { historyContext } from './history-context';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useRedoUndoStack } from '@/hooks/use-redo-undo-stack';
 import type { RedoUndoActionHandlers } from './redo-undo-action';
 
@@ -33,7 +33,7 @@ export const HistoryProvider: React.FC<React.PropsWithChildren> = ({
         removeIndex,
         updateIndex,
         removeRelationships,
-    } = useChartDB();
+    } = useSchemaX();
 
     const redoActionHandlers = useMemo(
         (): RedoUndoActionHandlers => ({

@@ -3,13 +3,13 @@ import type { Diagram } from '@/lib/domain/diagram';
 import { emptyFn } from '@/lib/utils';
 import type { DBRelationship } from '@/lib/domain/db-relationship';
 import type { DBTable } from '@/lib/domain/db-table';
-import type { ChartDBConfig } from '@/lib/domain/config';
+import type { SchemaXConfig } from '@/lib/domain/config';
 import type { DBDependency } from '@/lib/domain/db-dependency';
 
 export interface StorageContext {
     // Config operations
-    getConfig: () => Promise<ChartDBConfig | undefined>;
-    updateConfig: (config: Partial<ChartDBConfig>) => Promise<void>;
+    getConfig: () => Promise<SchemaXConfig | undefined>;
+    updateConfig: (config: Partial<SchemaXConfig>) => Promise<void>;
 
     // Diagram operations
     addDiagram: (params: { diagram: Diagram }) => Promise<void>;

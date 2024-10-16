@@ -35,7 +35,7 @@ export const de: LanguageTranslation = {
             },
             help: {
                 help: 'Hilfe',
-                visit_website: 'ChartDB Webseite',
+                visit_website: 'SchemaX Webseite',
                 join_discord: 'Auf Discord beitreten',
                 schedule_a_call: 'Gespräch vereinbaren',
             },

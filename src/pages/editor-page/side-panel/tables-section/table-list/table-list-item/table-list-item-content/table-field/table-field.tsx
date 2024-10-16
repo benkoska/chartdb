@@ -5,7 +5,7 @@ import { Button } from '@/components/button/button';
 import { Separator } from '@/components/separator/separator';
 
 import type { DBField } from '@/lib/domain/db-field';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { dataTypeMap } from '@/lib/data/data-types/data-types';
 import {
     Tooltip,
@@ -37,7 +37,7 @@ export const TableField: React.FC<TableFieldProps> = ({
     updateField,
     removeField,
 }) => {
-    const { databaseType } = useChartDB();
+    const { databaseType } = useSchemaX();
     const { t } = useTranslation();
     const { attributes, listeners, setNodeRef, transform, transition } =
         useSortable({ id: field.id });

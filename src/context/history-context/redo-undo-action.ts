@@ -1,11 +1,11 @@
 import type { DBTable } from '@/lib/domain/db-table';
-import type { ChartDBContext } from '../chartdb-context/chartdb-context';
+import type { SchemaXContext } from '../schemax-context/schemax-context';
 import type { DBField } from '@/lib/domain/db-field';
 import type { DBIndex } from '@/lib/domain/db-index';
 import type { DBRelationship } from '@/lib/domain/db-relationship';
 import type { DBDependency } from '@/lib/domain/db-dependency';
 
-type Action = keyof ChartDBContext;
+type Action = keyof SchemaXContext;
 
 type RedoUndoActionBase<T extends Action, RD, UD> = {
     action: T;

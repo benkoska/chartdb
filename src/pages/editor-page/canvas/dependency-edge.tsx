@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import type { Edge, EdgeProps } from '@xyflow/react';
 import { getSmoothStepPath, Position, useReactFlow } from '@xyflow/react';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { cn } from '@/lib/utils';
 import type { DBDependency } from '@/lib/domain/db-dependency';
 import { useLayout } from '@/hooks/use-layout';
@@ -26,7 +26,7 @@ export const DependencyEdge: React.FC<EdgeProps<DependencyEdgeType>> = ({
     // data,
 }) => {
     const { getInternalNode } = useReactFlow();
-    const { dependencies } = useChartDB();
+    const { dependencies } = useSchemaX();
     const { openDependencyFromSidebar, selectSidebarSection } = useLayout();
 
     const openDependencyInEditor = useCallback(() => {
@@ -135,7 +135,7 @@ export const DependencyEdge: React.FC<EdgeProps<DependencyEdgeType>> = ({
                 fill="none"
                 className={cn([
                     'react-flow__edge-path',
-                    `!stroke-2 ${selected ? '!stroke-blue-600' : '!stroke-blue-400'}`,
+                    `!stroke-2 ${selected ? '!stroke-sky-600' : '!stroke-sky-400'}`,
                 ])}
                 onClick={(e) => {
                     if (e.detail === 2) {

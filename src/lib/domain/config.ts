@@ -1,4 +1,4 @@
-export interface ChartDBConfig {
+export interface SchemaXConfig {
     defaultDiagramId: string;
     exportActions?: Date[];
 }

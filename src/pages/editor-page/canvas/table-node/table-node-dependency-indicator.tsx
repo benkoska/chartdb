@@ -1,4 +1,4 @@
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import type { DBTable } from '@/lib/domain/db-table';
 import {
     Handle,
@@ -19,7 +19,7 @@ export interface TableNodeDependencyIndicatorProps {
 
 export const TableNodeDependencyIndicator: React.FC<TableNodeDependencyIndicatorProps> =
     React.memo(({ table, focused }) => {
-        const { dependencies } = useChartDB();
+        const { dependencies } = useSchemaX();
         const updateNodeInternals = useUpdateNodeInternals();
         const connection = useConnection();
 
@@ -60,7 +60,7 @@ export const TableNodeDependencyIndicator: React.FC<TableNodeDependencyIndicator
                 {table.isView || table.isMaterializedView ? (
                     <Handle
                         id={`${TOP_SOURCE_HANDLE_ID_PREFIX}${table.id}`}
-                        className={`!h-4 !w-4 !border-2 !bg-blue-600 ${!focused ? '!invisible' : ''}`}
+                        className={`!h-4 !w-4 !border-2 !bg-sky-600 ${!focused ? '!invisible' : ''}`}
                         position={Position.Top}
                         type="source"
                     />

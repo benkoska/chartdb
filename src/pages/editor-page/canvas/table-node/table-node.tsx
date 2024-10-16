@@ -14,7 +14,7 @@ import { Label } from '@/components/label/label';
 import type { DBTable } from '@/lib/domain/db-table';
 import { TableNodeField } from './table-node-field';
 import { useLayout } from '@/hooks/use-layout';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import type { RelationshipEdgeType } from '../relationship-edge';
 import type { DBField } from '@/lib/domain/db-field';
 import { useTranslation } from 'react-i18next';
@@ -44,7 +44,7 @@ export const TableNode: React.FC<NodeProps<TableNodeType>> = React.memo(
         id,
         data: { table, isOverlapping, highlightOverlappingTables },
     }) => {
-        const { updateTable, relationships } = useChartDB();
+        const { updateTable, relationships } = useSchemaX();
         const edges = useStore((store) => store.edges) as EdgeType[];
         const { openTableFromSidebar, selectSidebarSection } = useLayout();
         const [expanded, setExpanded] = useState(false);
@@ -131,10 +131,10 @@ export const TableNode: React.FC<NodeProps<TableNodeType>> = React.memo(
                     className={cn(
                         'flex w-full flex-col border-2 bg-slate-50 dark:bg-slate-950 rounded-lg shadow-sm transition-transform duration-300',
                         selected
-                            ? 'border-blue-600'
+                            ? 'border-sky-600'
                             : 'border-slate-500 dark:border-slate-700',
                         isOverlapping
-                            ? 'ring-2 ring-offset-slate-50 dark:ring-offset-slate-900 ring-blue-500 ring-offset-2'
+                            ? 'ring-2 ring-offset-slate-50 dark:ring-offset-slate-900 ring-sky-500 ring-offset-2'
                             : '',
                         !highlightOverlappingTables && isOverlapping
                             ? 'animate-scale'

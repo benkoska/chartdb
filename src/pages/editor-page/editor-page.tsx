@@ -8,7 +8,7 @@ import React, {
 import { TopNavbar } from './top-navbar/top-navbar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useConfig } from '@/hooks/use-config';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useDialog } from '@/hooks/use-dialog';
 import { useRedoUndoStack } from '@/hooks/use-redo-undo-stack';
 import { Toaster } from '@/components/toast/toaster';
@@ -26,7 +26,7 @@ import { LocalConfigProvider } from '@/context/local-config-context/local-config
 import { StorageProvider } from '@/context/storage-context/storage-provider';
 import { ConfigProvider } from '@/context/config-context/config-provider';
 import { RedoUndoStackProvider } from '@/context/history-context/redo-undo-stack-provider';
-import { ChartDBProvider } from '@/context/chartdb-context/chartdb-provider';
+import { SchemaXProvider } from '@/context/schemax-context/schemax-provider';
 import { HistoryProvider } from '@/context/history-context/history-provider';
 import { ThemeProvider } from '@/context/theme-context/theme-provider';
 import { ReactFlowProvider } from '@xyflow/react';
@@ -45,7 +45,7 @@ export const EditorMobileLayoutLazy = React.lazy(
 
 const EditorPageComponent: React.FC = () => {
     const { loadDiagram, currentDiagram, schemas, filteredSchemas } =
-        useChartDB();
+        useSchemaX();
     const { openSelectSchema, showSidePanel } = useLayout();
     const { resetRedoStack, resetUndoStack } = useRedoUndoStack();
     const { showLoader, hideLoader } = useFullScreenLoader();
@@ -55,11 +55,8 @@ const EditorPageComponent: React.FC = () => {
     const navigate = useNavigate();
     const { isMd: isDesktop } = useBreakpoint('md');
     const [initialDiagram, setInitialDiagram] = useState<Diagram | undefined>();
-    const {
-        hideMultiSchemaNotification,
-        setHideMultiSchemaNotification,
-        githubRepoOpened,
-    } = useLocalConfig();
+    const { hideMultiSchemaNotification, setHideMultiSchemaNotification } =
+        useLocalConfig();
     const { toast } = useToast();
     const { t } = useTranslation();
 
@@ -161,7 +158,7 @@ const EditorPageComponent: React.FC = () => {
                         <ToastAction
                             onClick={() => handleChangeSchema()}
                             altText="Change the schema"
-                            className="border border-blue-600 bg-blue-600 text-white hover:bg-blue-500"
+                            className="border border-sky-600 bg-sky-600 text-white hover:bg-sky-500"
                         >
                             {t('multiple_schemas_alert.change_schema')}
                         </ToastAction>
@@ -219,7 +216,7 @@ export const EditorPage: React.FC = () => (
                     <StorageProvider>
                         <ConfigProvider>
                             <RedoUndoStackProvider>
-                                <ChartDBProvider>
+                                <SchemaXProvider>
                                     <HistoryProvider>
                                         <ReactFlowProvider>
                                             <ExportImageProvider>
@@ -231,7 +228,7 @@ export const EditorPage: React.FC = () => (
                                             </ExportImageProvider>
                                         </ReactFlowProvider>
                                     </HistoryProvider>
-                                </ChartDBProvider>
+                                </SchemaXProvider>
                             </RedoUndoStackProvider>
                         </ConfigProvider>
                     </StorageProvider>

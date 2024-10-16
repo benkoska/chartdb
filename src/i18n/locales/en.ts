@@ -34,7 +34,7 @@ export const en = {
             },
             help: {
                 help: 'Help',
-                visit_website: 'Visit ChartDB',
+                visit_website: 'Visit SchemaX',
                 join_discord: 'Join us on Discord',
                 schedule_a_call: 'Talk with us!',
             },

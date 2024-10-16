@@ -11,7 +11,7 @@ import type { DBSchema } from '@/lib/domain/db-schema';
 import type { DBDependency } from '@/lib/domain/db-dependency';
 import { EventEmitter } from 'ahooks/lib/useEventEmitter';
 
-export type ChartDBEventType =
+export type SchemaXEventType =
     | 'add_tables'
     | 'update_table'
     | 'remove_tables'
@@ -19,42 +19,42 @@ export type ChartDBEventType =
     | 'remove_field'
     | 'load_diagram';
 
-export type ChartDBEventBase<T extends ChartDBEventType, D> = {
+export type SchemaXEventBase<T extends SchemaXEventType, D> = {
     action: T;
     data: D;
 };
 
-export type CreateTableEvent = ChartDBEventBase<
+export type CreateTableEvent = SchemaXEventBase<
     'add_tables',
     { tables: DBTable[] }
 >;
 
-export type UpdateTableEvent = ChartDBEventBase<
+export type UpdateTableEvent = SchemaXEventBase<
     'update_table',
     { id: string; table: Partial<DBTable> }
 >;
 
-export type RemoveTableEvent = ChartDBEventBase<
+export type RemoveTableEvent = SchemaXEventBase<
     'remove_tables',
     { tableIds: string[] }
 >;
 
-export type AddFieldEvent = ChartDBEventBase<
+export type AddFieldEvent = SchemaXEventBase<
     'add_field',
     { tableId: string; field: DBField; fields: DBField[] }
 >;
 
-export type RemoveFieldEvent = ChartDBEventBase<
+export type RemoveFieldEvent = SchemaXEventBase<
     'remove_field',
     { tableId: string; fieldId: string; fields: DBField[] }
 >;
 
-export type LoadDiagramEvent = ChartDBEventBase<
+export type LoadDiagramEvent = SchemaXEventBase<
     'load_diagram',
     { diagram: Diagram }
 >;
 
-export type ChartDBEvent =
+export type SchemaXEvent =
     | CreateTableEvent
     | UpdateTableEvent
     | RemoveTableEvent
@@ -62,7 +62,7 @@ export type ChartDBEvent =
     | RemoveFieldEvent
     | LoadDiagramEvent;
 
-export interface ChartDBContext {
+export interface SchemaXContext {
     diagramId: string;
     diagramName: string;
     databaseType: DatabaseType;
@@ -71,7 +71,7 @@ export interface ChartDBContext {
     relationships: DBRelationship[];
     dependencies: DBDependency[];
     currentDiagram: Diagram;
-    events: EventEmitter<ChartDBEvent>;
+    events: EventEmitter<SchemaXEvent>;
 
     filteredSchemas?: string[];
     filterSchemas: (schemaIds: string[]) => void;
@@ -221,7 +221,7 @@ export interface ChartDBContext {
     ) => Promise<void>;
 }
 
-export const chartDBContext = createContext<ChartDBContext>({
+export const schemaXContext = createContext<SchemaXContext>({
     databaseType: DatabaseType.GENERIC,
     diagramName: '',
     diagramId: '',

@@ -37,7 +37,7 @@ import { ZoomableImage } from '@/components/zoomable-image/zoomable-image';
 import { useBreakpoint } from '@/hooks/use-breakpoint';
 
 const errorScriptOutputMessage =
-    'Invalid JSON. Please correct it or contact us at chartdb.io@gmail.com for help.';
+    'Invalid JSON. Please correct it or contact us at schemax.io@gmail.com for help.';
 
 export interface ImportDatabaseProps {
     goBack?: () => void;

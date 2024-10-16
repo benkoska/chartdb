@@ -2,8 +2,8 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { DBTable } from '@/lib/domain/db-table';
 import { deepCopy, generateId } from '@/lib/utils';
 import { randomColor } from '@/lib/colors';
-import type { ChartDBContext, ChartDBEvent } from './chartdb-context';
-import { chartDBContext } from './chartdb-context';
+import type { SchemaXContext, SchemaXEvent } from './schemax-context';
+import { schemaXContext } from './schemax-context';
 import { DatabaseType } from '@/lib/domain/database-type';
 import type { DBField } from '@/lib/domain/db-field';
 import type { DBIndex } from '@/lib/domain/db-index';
@@ -24,11 +24,11 @@ import { defaultSchemas } from '@/lib/data/default-schemas';
 import { useEventEmitter } from 'ahooks';
 import type { DBDependency } from '@/lib/domain/db-dependency';
 
-export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
+export const SchemaXProvider: React.FC<React.PropsWithChildren> = ({
     children,
 }) => {
     const db = useStorage();
-    const events = useEventEmitter<ChartDBEvent>();
+    const events = useEventEmitter<SchemaXEvent>();
     const navigate = useNavigate();
     const { setSchemasFilter, schemasFilter } = useLocalConfig();
     const { addUndoAction, resetRedoStack, resetUndoStack } =
@@ -52,10 +52,10 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
 
     useEffect(() => {
         if (diagramName) {
-            document.title = `ChartDB - ${diagramName} Diagram | Visualize Database Schemas`;
+            document.title = `SchemaX - ${diagramName} Diagram | Visualize Database Schemas`;
         } else {
             document.title =
-                'ChartDB - Create & Visualize Database Schema Diagrams';
+                'SchemaX - Create & Visualize Database Schema Diagrams';
         }
     }, [diagramName]);
 
@@ -85,7 +85,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [tables, defaultSchemaName, databaseType]
     );
 
-    const filterSchemas: ChartDBContext['filterSchemas'] = useCallback(
+    const filterSchemas: SchemaXContext['filterSchemas'] = useCallback(
         (schemaIds) => {
             setSchemasFilter((prev) => ({
                 ...prev,
@@ -95,7 +95,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [diagramId, setSchemasFilter]
     );
 
-    const filteredSchemas: ChartDBContext['filteredSchemas'] = useMemo(() => {
+    const filteredSchemas: SchemaXContext['filteredSchemas'] = useMemo(() => {
         if (schemas.length === 0) {
             return undefined;
         }
@@ -138,7 +138,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         ]
     );
 
-    const clearDiagramData: ChartDBContext['clearDiagramData'] =
+    const clearDiagramData: SchemaXContext['clearDiagramData'] =
         useCallback(async () => {
             const updatedAt = new Date();
             setTables([]);
@@ -157,7 +157,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
             ]);
         }, [db, diagramId, resetRedoStack, resetUndoStack]);
 
-    const deleteDiagram: ChartDBContext['deleteDiagram'] =
+    const deleteDiagram: SchemaXContext['deleteDiagram'] =
         useCallback(async () => {
             setDiagramId('');
             setDiagramName('');
@@ -198,7 +198,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
             updateConfig,
         ]);
 
-    const updateDiagramUpdatedAt: ChartDBContext['updateDiagramUpdatedAt'] =
+    const updateDiagramUpdatedAt: SchemaXContext['updateDiagramUpdatedAt'] =
         useCallback(async () => {
             const updatedAt = new Date();
             setDiagramUpdatedAt(updatedAt);
@@ -208,7 +208,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
             });
         }, [db, diagramId, setDiagramUpdatedAt]);
 
-    const updateDatabaseType: ChartDBContext['updateDatabaseType'] =
+    const updateDatabaseType: SchemaXContext['updateDatabaseType'] =
         useCallback(
             async (databaseType) => {
                 setDatabaseType(databaseType);
@@ -222,7 +222,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
             [db, diagramId, setDatabaseType]
         );
 
-    const updateDatabaseEdition: ChartDBContext['updateDatabaseEdition'] =
+    const updateDatabaseEdition: SchemaXContext['updateDatabaseEdition'] =
         useCallback(
             async (databaseEdition) => {
                 setDatabaseEdition(databaseEdition);
@@ -236,7 +236,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
             [db, diagramId, setDatabaseEdition]
         );
 
-    const updateDiagramId: ChartDBContext['updateDiagramId'] = useCallback(
+    const updateDiagramId: SchemaXContext['updateDiagramId'] = useCallback(
         async (id) => {
             const prevId = diagramId;
             setDiagramId(id);
@@ -245,7 +245,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [db, diagramId, setDiagramId]
     );
 
-    const updateDiagramName: ChartDBContext['updateDiagramName'] = useCallback(
+    const updateDiagramName: SchemaXContext['updateDiagramName'] = useCallback(
         async (name, options = { updateHistory: true }) => {
             const prevName = diagramName;
             setDiagramName(name);
@@ -275,7 +275,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         ]
     );
 
-    const addTables: ChartDBContext['addTables'] = useCallback(
+    const addTables: SchemaXContext['addTables'] = useCallback(
         async (tables: DBTable[], options = { updateHistory: true }) => {
             setTables((currentTables) => [...currentTables, ...tables]);
             const updatedAt = new Date();
@@ -299,14 +299,14 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [db, diagramId, setTables, addUndoAction, resetRedoStack, events]
     );
 
-    const addTable: ChartDBContext['addTable'] = useCallback(
+    const addTable: SchemaXContext['addTable'] = useCallback(
         async (table: DBTable, options = { updateHistory: true }) => {
             return addTables([table], options);
         },
         [addTables]
     );
 
-    const createTable: ChartDBContext['createTable'] = useCallback(
+    const createTable: SchemaXContext['createTable'] = useCallback(
         async (attributes) => {
             const table: DBTable = {
                 id: generateId(),
@@ -340,12 +340,12 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [addTable, tables, databaseType]
     );
 
-    const getTable: ChartDBContext['getTable'] = useCallback(
+    const getTable: SchemaXContext['getTable'] = useCallback(
         (id: string) => tables.find((table) => table.id === id) ?? null,
         [tables]
     );
 
-    const removeTables: ChartDBContext['removeTables'] = useCallback(
+    const removeTables: SchemaXContext['removeTables'] = useCallback(
         async (ids, options) => {
             const tables = ids.map((id) => getTable(id)).filter((t) => !!t);
             const relationshipsToRemove = relationships.filter(
@@ -425,14 +425,14 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         ]
     );
 
-    const removeTable: ChartDBContext['removeTable'] = useCallback(
+    const removeTable: SchemaXContext['removeTable'] = useCallback(
         async (id: string, options = { updateHistory: true }) => {
             return removeTables([id], options);
         },
         [removeTables]
     );
 
-    const updateTable: ChartDBContext['updateTable'] = useCallback(
+    const updateTable: SchemaXContext['updateTable'] = useCallback(
         async (
             id: string,
             table: Partial<DBTable>,
@@ -475,7 +475,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         ]
     );
 
-    const updateTablesState: ChartDBContext['updateTablesState'] = useCallback(
+    const updateTablesState: SchemaXContext['updateTablesState'] = useCallback(
         async (
             updateFn: (tables: DBTable[]) => PartialExcept<DBTable, 'id'>[],
             options = { updateHistory: true, forceOverride: false }
@@ -608,7 +608,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         ]
     );
 
-    const getField: ChartDBContext['getField'] = useCallback(
+    const getField: SchemaXContext['getField'] = useCallback(
         (tableId: string, fieldId: string) => {
             const table = getTable(tableId);
             return table?.fields.find((f) => f.id === fieldId) ?? null;
@@ -616,7 +616,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [getTable]
     );
 
-    const updateField: ChartDBContext['updateField'] = useCallback(
+    const updateField: SchemaXContext['updateField'] = useCallback(
         async (
             tableId: string,
             fieldId: string,
@@ -673,7 +673,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [db, diagramId, setTables, addUndoAction, resetRedoStack, getField]
     );
 
-    const removeField: ChartDBContext['removeField'] = useCallback(
+    const removeField: SchemaXContext['removeField'] = useCallback(
         async (
             tableId: string,
             fieldId: string,
@@ -742,7 +742,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         ]
     );
 
-    const addField: ChartDBContext['addField'] = useCallback(
+    const addField: SchemaXContext['addField'] = useCallback(
         async (
             tableId: string,
             field: DBField,
@@ -805,7 +805,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         ]
     );
 
-    const createField: ChartDBContext['createField'] = useCallback(
+    const createField: SchemaXContext['createField'] = useCallback(
         async (tableId: string) => {
             const table = getTable(tableId);
             const field: DBField = {
@@ -828,7 +828,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [addField, getTable, databaseType]
     );
 
-    const getIndex: ChartDBContext['getIndex'] = useCallback(
+    const getIndex: SchemaXContext['getIndex'] = useCallback(
         (tableId: string, indexId: string) => {
             const table = getTable(tableId);
             return table?.indexes.find((i) => i.id === indexId) ?? null;
@@ -836,7 +836,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [getTable]
     );
 
-    const addIndex: ChartDBContext['addIndex'] = useCallback(
+    const addIndex: SchemaXContext['addIndex'] = useCallback(
         async (
             tableId: string,
             index: DBIndex,
@@ -880,7 +880,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [db, diagramId, setTables, addUndoAction, resetRedoStack]
     );
 
-    const removeIndex: ChartDBContext['removeIndex'] = useCallback(
+    const removeIndex: SchemaXContext['removeIndex'] = useCallback(
         async (
             tableId: string,
             indexId: string,
@@ -936,7 +936,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [db, diagramId, setTables, addUndoAction, resetRedoStack, getIndex]
     );
 
-    const createIndex: ChartDBContext['createIndex'] = useCallback(
+    const createIndex: SchemaXContext['createIndex'] = useCallback(
         async (tableId: string) => {
             const table = getTable(tableId);
             const index: DBIndex = {
@@ -954,7 +954,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [addIndex, getTable]
     );
 
-    const updateIndex: ChartDBContext['updateIndex'] = useCallback(
+    const updateIndex: SchemaXContext['updateIndex'] = useCallback(
         async (
             tableId: string,
             indexId: string,
@@ -1008,7 +1008,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [db, diagramId, setTables, addUndoAction, resetRedoStack, getIndex]
     );
 
-    const addRelationships: ChartDBContext['addRelationships'] = useCallback(
+    const addRelationships: SchemaXContext['addRelationships'] = useCallback(
         async (
             relationships: DBRelationship[],
             options = { updateHistory: true }
@@ -1042,7 +1042,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [db, diagramId, setRelationships, addUndoAction, resetRedoStack]
     );
 
-    const addRelationship: ChartDBContext['addRelationship'] = useCallback(
+    const addRelationship: SchemaXContext['addRelationship'] = useCallback(
         async (
             relationship: DBRelationship,
             options = { updateHistory: true }
@@ -1052,7 +1052,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [addRelationships]
     );
 
-    const createRelationship: ChartDBContext['createRelationship'] =
+    const createRelationship: SchemaXContext['createRelationship'] =
         useCallback(
             async ({
                 sourceTableId,
@@ -1090,14 +1090,14 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
             [addRelationship, getTable]
         );
 
-    const getRelationship: ChartDBContext['getRelationship'] = useCallback(
+    const getRelationship: SchemaXContext['getRelationship'] = useCallback(
         (id: string) =>
             relationships.find((relationship) => relationship.id === id) ??
             null,
         [relationships]
     );
 
-    const removeRelationships: ChartDBContext['removeRelationships'] =
+    const removeRelationships: SchemaXContext['removeRelationships'] =
         useCallback(
             async (ids: string[], options = { updateHistory: true }) => {
                 const prevRelationships = [
@@ -1143,7 +1143,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
             ]
         );
 
-    const removeRelationship: ChartDBContext['removeRelationship'] =
+    const removeRelationship: SchemaXContext['removeRelationship'] =
         useCallback(
             async (id: string, options = { updateHistory: true }) => {
                 return removeRelationships([id], options);
@@ -1151,7 +1151,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
             [removeRelationships]
         );
 
-    const updateRelationship: ChartDBContext['updateRelationship'] =
+    const updateRelationship: SchemaXContext['updateRelationship'] =
         useCallback(
             async (
                 id: string,
@@ -1197,7 +1197,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
             ]
         );
 
-    const addDependencies: ChartDBContext['addDependencies'] = useCallback(
+    const addDependencies: SchemaXContext['addDependencies'] = useCallback(
         async (
             dependencies: DBDependency[],
             options = { updateHistory: true }
@@ -1231,14 +1231,14 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [db, diagramId, setDependencies, addUndoAction, resetRedoStack]
     );
 
-    const addDependency: ChartDBContext['addDependency'] = useCallback(
+    const addDependency: SchemaXContext['addDependency'] = useCallback(
         async (dependency: DBDependency, options = { updateHistory: true }) => {
             return addDependencies([dependency], options);
         },
         [addDependencies]
     );
 
-    const createDependency: ChartDBContext['createDependency'] = useCallback(
+    const createDependency: SchemaXContext['createDependency'] = useCallback(
         async ({ tableId, dependentTableId }) => {
             const table = getTable(tableId);
             const dependentTable = getTable(dependentTableId);
@@ -1259,13 +1259,13 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         [addDependency, getTable]
     );
 
-    const getDependency: ChartDBContext['getDependency'] = useCallback(
+    const getDependency: SchemaXContext['getDependency'] = useCallback(
         (id: string) =>
             dependencies.find((dependency) => dependency.id === id) ?? null,
         [dependencies]
     );
 
-    const removeDependencies: ChartDBContext['removeDependencies'] =
+    const removeDependencies: SchemaXContext['removeDependencies'] =
         useCallback(
             async (ids: string[], options = { updateHistory: true }) => {
                 const prevDependencies = [
@@ -1309,14 +1309,14 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
             ]
         );
 
-    const removeDependency: ChartDBContext['removeDependency'] = useCallback(
+    const removeDependency: SchemaXContext['removeDependency'] = useCallback(
         async (id: string, options = { updateHistory: true }) => {
             return removeDependencies([id], options);
         },
         [removeDependencies]
     );
 
-    const updateDependency: ChartDBContext['updateDependency'] = useCallback(
+    const updateDependency: SchemaXContext['updateDependency'] = useCallback(
         async (
             id: string,
             dependency: Partial<DBDependency>,
@@ -1355,7 +1355,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
         ]
     );
 
-    const loadDiagram: ChartDBContext['loadDiagram'] = useCallback(
+    const loadDiagram: SchemaXContext['loadDiagram'] = useCallback(
         async (diagramId: string) => {
             const diagram = await db.getDiagram(diagramId, {
                 includeRelationships: true,
@@ -1395,7 +1395,7 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
     );
 
     return (
-        <chartDBContext.Provider
+        <schemaXContext.Provider
             value={{
                 diagramId,
                 diagramName,
@@ -1451,6 +1451,6 @@ export const ChartDBProvider: React.FC<React.PropsWithChildren> = ({
             }}
         >
             {children}
-        </chartDBContext.Provider>
+        </schemaXContext.Provider>
     );
 };

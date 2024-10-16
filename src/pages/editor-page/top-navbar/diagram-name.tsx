@@ -3,7 +3,7 @@ import { Label } from '@/components/label/label';
 import { Button } from '@/components/button/button';
 import { Check, Pencil } from 'lucide-react';
 import { Input } from '@/components/input/input';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useClickAway, useKeyPressEvent } from 'react-use';
 import { useBreakpoint } from '@/hooks/use-breakpoint';
 import { DiagramIcon } from '@/components/diagram-icon/diagram-icon';
@@ -14,7 +14,7 @@ import { labelVariants } from '@/components/label/label-variants';
 export interface DiagramNameProps {}
 
 export const DiagramName: React.FC<DiagramNameProps> = () => {
-    const { diagramName, updateDiagramName, currentDiagram } = useChartDB();
+    const { diagramName, updateDiagramName, currentDiagram } = useSchemaX();
 
     const { t } = useTranslation();
     const { isMd: isDesktop } = useBreakpoint('md');

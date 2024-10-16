@@ -4,7 +4,7 @@ import { ZoomIn, ZoomOut, Save, Redo, Undo, Scan } from 'lucide-react';
 import { Separator } from '@/components/separator/separator';
 import { ToolbarButton } from './toolbar-button';
 import { useHistory } from '@/hooks/use-history';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useOnViewportChange, useReactFlow } from '@xyflow/react';
 import {
     Tooltip,
@@ -19,7 +19,7 @@ const convertToPercentage = (value: number) => `${Math.round(value * 100)}%`;
 export interface ToolbarProps {}
 
 export const Toolbar: React.FC<ToolbarProps> = () => {
-    const { updateDiagramUpdatedAt } = useChartDB();
+    const { updateDiagramUpdatedAt } = useSchemaX();
     const { t } = useTranslation();
     const { redo, undo, hasRedo, hasUndo } = useHistory();
     const { getZoom, zoomIn, zoomOut, fitView } = useReactFlow();

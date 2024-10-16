@@ -3,7 +3,7 @@ import { Button } from '@/components/button/button';
 import { ListCollapse, Workflow } from 'lucide-react';
 import { Input } from '@/components/input/input';
 import { RelationshipList } from './relationship-list/relationship-list';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import type { DBRelationship } from '@/lib/domain/db-relationship';
 import { shouldShowRelationshipBySchemaFilter } from '@/lib/domain/db-relationship';
 import { useLayout } from '@/hooks/use-layout';
@@ -20,7 +20,7 @@ import { useDialog } from '@/hooks/use-dialog';
 export interface RelationshipsSectionProps {}
 
 export const RelationshipsSection: React.FC<RelationshipsSectionProps> = () => {
-    const { relationships, filteredSchemas } = useChartDB();
+    const { relationships, filteredSchemas } = useSchemaX();
     const [filterText, setFilterText] = React.useState('');
     const { closeAllRelationshipsInSidebar } = useLayout();
     const { t } = useTranslation();

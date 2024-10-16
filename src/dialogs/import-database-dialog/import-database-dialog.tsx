@@ -7,7 +7,7 @@ import type { DatabaseEdition } from '@/lib/domain/database-edition';
 import type { DatabaseMetadata } from '@/lib/data/import-metadata/metadata-types/database-metadata';
 import { loadDatabaseMetadata } from '@/lib/data/import-metadata/metadata-types/database-metadata';
 import { loadFromDatabaseMetadata } from '@/lib/domain/diagram';
-import { useChartDB } from '@/hooks/use-chartdb';
+import { useSchemaX } from '@/hooks/use-schemax';
 import { useRedoUndoStack } from '@/hooks/use-redo-undo-stack';
 import { Trans, useTranslation } from 'react-i18next';
 import { useReactFlow } from '@xyflow/react';
@@ -30,7 +30,7 @@ export const ImportDatabaseDialog: React.FC<ImportDatabaseDialogProps> = ({
         addTables,
         addRelationships,
         diagramName,
-    } = useChartDB();
+    } = useSchemaX();
     const [scriptResult, setScriptResult] = useState('');
     const { resetRedoStack, resetUndoStack } = useRedoUndoStack();
     const { setNodes } = useReactFlow();
@@ -209,7 +209,7 @@ export const ImportDatabaseDialog: React.FC<ImportDatabaseDialogProps> = ({
                         )}
                     </div>
                     {(newTablesNumber ?? 0 > 0) ? (
-                        <div className="!m-0 text-blue-500">
+                        <div className="!m-0 text-sky-500">
                             <Trans
                                 i18nKey="import_database_dialog.override_alert.content.new_tables"
                                 values={{
@@ -222,7 +222,7 @@ export const ImportDatabaseDialog: React.FC<ImportDatabaseDialogProps> = ({
                         </div>
                     ) : null}
                     {(newRelationshipsNumber ?? 0 > 0) ? (
-                        <div className="!m-0 text-blue-500">
+                        <div className="!m-0 text-sky-500">
                             <Trans
                                 i18nKey="import_database_dialog.override_alert.content.new_relationships"
                                 values={{

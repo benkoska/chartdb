@@ -140,7 +140,7 @@ export const adjustTablePositions = ({
     relationships: inputRelationships,
     tables: inputTables,
     mode = 'all',
-    idsToUpdate = undefined
+    idsToUpdate = undefined,
 }: {
     tables: DBTable[];
     relationships: DBRelationship[];
@@ -150,7 +150,10 @@ export const adjustTablePositions = ({
     const tables = deepCopy(inputTables);
     const relationships = deepCopy(inputRelationships);
 
-    const adjustPositionsForTables = (tablesToAdjust: DBTable[]) => {
+    const adjustPositionsForTables = (
+        tablesToAdjust: DBTable[],
+        fixedTables: DBTable[] = []
+    ) => {
         const tableWidth = 200;
         const tableHeight = 300;
         const gapX = 100;
@@ -180,6 +183,11 @@ export const adjustTablePositions = ({
 
         const positionedTables = new Set<string>();
         const tablePositions = new Map<string, { x: number; y: number }>();
+
+        for (const table of fixedTables) {
+            tablePositions.set(table.id, { x: table.x, y: table.y });
+            positionedTables.add(table.id);
+        }
 
         const isOverlapping = (
             x: number,
@@ -212,6 +220,9 @@ export const adjustTablePositions = ({
             while (iterations < maxIterations) {
                 const x = baseX + radius * Math.cos(angle);
                 const y = baseY + radius * Math.sin(angle);
+
+                console.log('checking position', x, y);
+
                 if (!isOverlapping(x, y, tableId)) {
                     return { x, y };
                 }
@@ -238,6 +249,8 @@ export const adjustTablePositions = ({
             if (positionedTables.has(table.id)) return;
 
             const { x, y } = findNonOverlappingPosition(baseX, baseY, table.id);
+
+            console.log('positioning table', table.id, x, y);
 
             table.x = x;
             table.y = y;
@@ -302,13 +315,18 @@ export const adjustTablePositions = ({
         );
 
         // Adjust positions for each schema group
-        Object.values(tablesBySchema).forEach(adjustPositionsForTables);
+        Object.values(tablesBySchema).forEach((tables) =>
+            adjustPositionsForTables(tables)
+        );
     } else if (mode === 'byId') {
         if (idsToUpdate == null) {
             throw new Error('idsToUpdate is required when mode is byId');
         }
 
-        adjustPositionsForTables(tables.filter((table) => idsToUpdate.includes(table.id)));
+        adjustPositionsForTables(
+            tables.filter((table) => idsToUpdate.includes(table.id)),
+            tables.filter((table) => !idsToUpdate.includes(table.id))
+        );
     } else {
         // Adjust positions for all tables
         adjustPositionsForTables(tables);
