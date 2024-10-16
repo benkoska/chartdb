@@ -161,7 +161,7 @@ const EditorPageComponent: React.FC = () => {
                         <ToastAction
                             onClick={() => handleChangeSchema()}
                             altText="Change the schema"
-                            className="border border-pink-600 bg-pink-600 text-white hover:bg-pink-500"
+                            className="border border-blue-600 bg-blue-600 text-white hover:bg-blue-500"
                         >
                             {t('multiple_schemas_alert.change_schema')}
                         </ToastAction>

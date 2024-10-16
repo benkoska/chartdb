@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Editor, useMonaco } from '@monaco-editor/react';
 
@@ -17,18 +17,30 @@ import { adjustTablePositions, shouldShowTablesBySchemaFilter, type DBTable } fr
 import { DBRelationship } from '@/lib/domain/db-relationship';
 import { generateId } from '@/lib/utils';
 import { randomColor } from '@/lib/colors';
+import { DBIndex } from '@/lib/domain/db-index';
 
 export interface CodeSectionProps {}
 
 export const CodeSection: React.FC<CodeSectionProps> = () => {
-	const { tables, databaseType, updateTable, removeTable, createTable, filteredSchemas, relationships, updateRelationship, removeRelationship, addRelationship } = useChartDB();
+	const lastUpdate = useRef(Date.now());
+
+	const { tables, databaseType, updateTable, removeTable, createIndex, updateIndex, removeIndex, createTable, filteredSchemas, relationships, updateRelationship, removeRelationship, addRelationship } = useChartDB();
 	const [code, setCode] = useState(() => generateDBML(tables, relationships));
 
     const monaco = useMonaco();
     const { effectiveTheme } = useTheme();
 
+	// TODO: keep formatting similar to the original code
+	useEffect(() => {
+		if (Date.now() - lastUpdate.current > 1000) {
+			setCode(generateDBML(tables, relationships));
+		}
+	}, [tables, relationships]);
+
     function updateFromCode(code: string) {
         const { tables: parsedTables, relationships: parsedRelationships } = parseCode(code, databaseType);
+
+		lastUpdate.current = Date.now();
 
 		for (const table of tables) {
 			if (parsedTables.find((t) => t.name === table.name) == null) {
@@ -62,11 +74,12 @@ export const CodeSection: React.FC<CodeSectionProps> = () => {
                 fields: table.fields.map(
                     (f) =>
                         ({
-                            id: existingTable?.fields.find((eF) => eF.name === f.name)?.id,
+                            id: existingTable?.fields.find((eF) => eF.name === f.name)?.id ?? generateId(),
                             name: f.name,
                             type: f.type,
                             primaryKey: f.primaryKey,
-                            unique: f.unique,
+                            unique: f.primaryKey || f.unique,
+							comments: f.note
                         }) as DBField
                 ),
             };
@@ -75,7 +88,12 @@ export const CodeSection: React.FC<CodeSectionProps> = () => {
 				updateTable(existingTable!.id!, codeTableContent)
 			} else {
 				createTable({
-					...codeTableContent,
+					name: codeTableContent.name,
+					fields: codeTableContent.fields?.map((f) => ({
+						...f,
+						id: f.id ?? generateId(),
+						createdAt: Date.now(),
+					})),
 					x: 0,
 					y: 0,
 					color: randomColor(),
@@ -97,6 +115,28 @@ export const CodeSection: React.FC<CodeSectionProps> = () => {
 						y: newTables[0].y
 					})
 				});
+			}
+		}
+
+		for (const table of parsedTables) {
+			if (table.indexes.length < 1) continue;
+
+			const existingTable = tables.find((t) => t.name === table.name);
+
+			if (existingTable != null) {
+				const x = {
+					indexes: table.indexes.map((i) => ({
+						id: existingTable?.indexes.find((eI) => eI.name === i.name)?.id,
+						name: i.name,
+						unique: i.unique,
+						fieldIds: i.fields.map((f) => existingTable?.fields.find((eF) => eF.name === f)?.id).filter((id) => id != null),
+					}) as DBIndex).filter((i) => i.fieldIds.length > 0)
+				}
+				updateTable(existingTable.id, x);
+
+				const i = table.indexes[0]
+				// console.log(i.fields.map((f) => existingTable?.fields.find((eF) => eF.name === "brand_id")?.id))
+				console.log(i.name, existingTable?.fields)
 			}
 		}
 
@@ -134,37 +174,24 @@ export const CodeSection: React.FC<CodeSectionProps> = () => {
 
 			if (sourceTable == null || targetTable == null || sourceField == null || targetField == null) continue;
 
-            const codeRelationshipDetails: DBRelationship = {
-				id: generateId(),
-				name: relationship.name,
-                sourceTableId: sourceTable!.id,
-                targetTableId: targetTable!.id,
-                sourceFieldId: sourceField!.id,
-                targetFieldId: targetField!.id,
+            const codeRelationshipDetails: Partial<DBRelationship> = {
+				// name: relationship.name,
+                // sourceTableId: sourceTable!.id,
+                // targetTableId: targetTable!.id,
+                // sourceFieldId: sourceField!.id,
+                // targetFieldId: targetField!.id,
                 sourceCardinality: relationship.sourceCardinality,
                 targetCardinality: relationship.targetCardinality,
-				createdAt: Date.now(),
             };
 
 			if (existingRelationship != null) {
 				updateRelationship(existingRelationship!.id!, codeRelationshipDetails)
 			} else {
-				addRelationship(codeRelationshipDetails)
-				// .then((newRelationship) => {
-				// 	const newTables = adjustTablePositions({
-				// 		relationships,
-				// 		tables: tables.filter((table) =>
-				// 			shouldShowTablesBySchemaFilter(table, filteredSchemas)
-				// 		),
-				// 		mode: 'byId',
-				// 		idsToUpdate: [newTable.id]
-				// 	});
-
-				// 	updateTable(newTable.id, {
-				// 		x: newTables[0].x,
-				// 		y: newTables[0].y
-				// 	})
-				// });
+				addRelationship({
+					id: generateId(),
+					...codeRelationshipDetails,
+					createdAt: Date.now(),
+				} as DBRelationship)
 			}
 		}
 	}

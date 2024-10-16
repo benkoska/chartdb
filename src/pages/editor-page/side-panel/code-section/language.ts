@@ -15,6 +15,7 @@ export const languageDef = {
     keywords: [
         'Table',
         'Rel',
+		'Indexes',
         'N',
         ...Object.keys(typeAlias),
         ...dataTypes.map((type) => type.name),

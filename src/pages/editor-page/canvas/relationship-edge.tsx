@@ -149,9 +149,11 @@ export const RelationshipEdge: React.FC<EdgeProps<RelationshipEdgeType>> = ({
             }),
         [relationship?.targetCardinality, selected, targetSide]
     );
+
     return (
         <>
             <path
+				key={`${id}-${sourceMarker}-${targetMarker}`}
                 id={id}
                 d={edgePath}
                 markerStart={`url(#${sourceMarker})`}
@@ -159,7 +161,7 @@ export const RelationshipEdge: React.FC<EdgeProps<RelationshipEdgeType>> = ({
                 fill="none"
                 className={cn([
                     'react-flow__edge-path',
-                    `!stroke-2 ${selected ? '!stroke-pink-600' : '!stroke-slate-400'}`,
+                    `!stroke-2 ${selected ? '!stroke-blue-600' : '!stroke-slate-400'}`
                 ])}
                 onClick={(e) => {
                     if (e.detail === 2) {
@@ -181,12 +183,5 @@ export const RelationshipEdge: React.FC<EdgeProps<RelationshipEdgeType>> = ({
                 }}
             />
         </>
-        // <BaseEdge
-        //     id={id}
-        //     path={edgePath}
-        //     markerStart="url(#cardinality_one)"
-        //     markerEnd="url(#cardinality_one)"
-        //     className={`!stroke-2 ${selected ? '!stroke-slate-500' : '!stroke-slate-300'}`}
-        // />
     );
 };

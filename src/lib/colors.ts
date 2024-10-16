@@ -1,6 +1,6 @@
 export const colorOptions = [
     '#ff6363', // A brighter red.
-    '#ff6b8a', // A vibrant pink.
+    '#ff6b8a', // A vibrant blue.
     '#c05dcf', // A rich purple.
     '#b067e9', // A lighter purple.
     '#8a61f5', // A bold indigo.

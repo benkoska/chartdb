@@ -753,7 +753,7 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
                         >
                             <Badge
                                 variant="default"
-                                className="bg-pink-600 text-white"
+                                className="bg-blue-600 text-white"
                             >
                                 {t('loading_diagram')}
                             </Badge>
@@ -770,7 +770,7 @@ export const Canvas: React.FC<CanvasProps> = ({ initialTables }) => {
                             className="!shadow-none"
                         >
                             <Button
-                                className="size-11 bg-pink-600 p-2 hover:bg-pink-500"
+                                className="size-11 bg-blue-600 p-2 hover:bg-blue-500"
                                 onClick={showSidePanel}
                             >
                                 <Pencil />

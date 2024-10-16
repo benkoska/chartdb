@@ -63,7 +63,7 @@ export const TableNodeField: React.FC<TableNodeFieldProps> = React.memo(
         return (
             <div
                 className={`group relative flex h-8 items-center justify-between gap-1 border-t px-3 text-sm last:rounded-b-[6px] hover:bg-slate-100 dark:hover:bg-slate-800 ${
-                    highlighted ? 'bg-pink-100 dark:bg-pink-900' : ''
+                    highlighted ? 'bg-blue-100 dark:bg-blue-900' : ''
                 } transition-all duration-200 ease-in-out ${
                     visible
                         ? 'max-h-8 opacity-100'
@@ -74,13 +74,13 @@ export const TableNodeField: React.FC<TableNodeFieldProps> = React.memo(
                     <>
                         <Handle
                             id={`${RIGHT_HANDLE_ID_PREFIX}${field.id}`}
-                            className={`!h-4 !w-4 !border-2 !bg-pink-600 ${!focused ? '!invisible' : ''}`}
+                            className={`!h-4 !w-4 !border-2 !bg-blue-600 ${!focused ? '!invisible' : ''}`}
                             position={Position.Right}
                             type="source"
                         />
                         <Handle
                             id={`${LEFT_HANDLE_ID_PREFIX}${field.id}`}
-                            className={`!h-4 !w-4 !border-2 !bg-pink-600 ${!focused ? '!invisible' : ''}`}
+                            className={`!h-4 !w-4 !border-2 !bg-blue-600 ${!focused ? '!invisible' : ''}`}
                             position={Position.Left}
                             type="source"
                         />

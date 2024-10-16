@@ -43,14 +43,35 @@ export function dataTypeRegex(type: DataType): RegExp | string {
 export function generateDBML(tables: DBTable[], relations: DBRelationship[]): string {
     let code = '';
     for (const table of tables) {
-        code += `Table ${table.name} {\n`;
+        code += `Table ${table.name} {`;
+		if (table.comments != null && table.comments.length > 0) {
+			code += `\n\t[note: "${table.comments}"]`;
+		}
+		code += '\n'
         for (const field of table.fields) {
             code += '\t';
             code += `${field.name} ${field.type.name}`;
             if (!field.primaryKey && field.unique) code += ' [unique]';
             if (field.primaryKey) code += ' [primary key]';
+			if (field.nullable) code += ' [null]';
+			if (field.comments != null && field.comments.length > 0) code += ` [note: "${field.comments}"]`;
             code += '\n';
         }
+
+		const indices = table.indexes.filter((i) => i.name != "PRIMARY");
+		if (indices.length > 0) {
+			code += '\n\tIndexes {\n';
+			for (const index of indices) {
+				code += '\t\t';
+				code += `(${index.fieldIds.map((id) => table.fields.find((f) => f.id == id)!.name).join(', ')})`;
+
+				if (index.unique) code += ' [unique]';
+				if (index.name != null) code += ` [name: "${index.name}"]`;
+				code += '\n';
+			}
+			code += '\t}\n';
+		}
+
         code += `}\n`;
         code += '\n';
     }
@@ -61,8 +82,11 @@ export function generateDBML(tables: DBTable[], relations: DBRelationship[]): st
         const sourceTable = tables.find((t) => t.id == relation.sourceTableId)!;
         const targetTable = tables.find((t) => t.id == relation.targetTableId)!;
 
-        code += `${relation.sourceCardinality == 'one' ? '1': 'N'} ${sourceTable.name}.${sourceTable.fields.find((f) => f.id == relation.sourceFieldId)!.name}, `;
-        code += `${relation.targetCardinality == 'one' ? '1': 'N'} ${targetTable.name}.${targetTable.fields.find((f) => f.id == relation.targetFieldId)!.name}`;
+		const sourceField = sourceTable.fields.find((f) => f.id == relation.sourceFieldId)!;
+		const targetField = targetTable.fields.find((f) => f.id == relation.targetFieldId)!;
+
+        code += `${relation.sourceCardinality == 'one' ? '1': 'N'} ${sourceTable.name}.${sourceField.name}, `;
+        code += `${relation.targetCardinality == 'one' ? '1': 'N'} ${targetTable.name}.${targetField.name}`;
         code += '\n';
     }
 
@@ -75,6 +99,13 @@ interface ParsedTable {
     
     name: string;
     fields: ParsedField[];
+	indexes: ParsedIndex[];
+}
+
+interface ParsedIndex {
+    name: string;
+	unique: boolean;
+    fields: string[];
 }
 
 interface ParsedRelationship {
@@ -95,6 +126,7 @@ interface ParsedField {
     type: DataType;
     primaryKey: boolean;
     unique: boolean;
+	note?: string;
 }
 
 export function parseCode(code: string, databaseType: DatabaseType): {
@@ -113,7 +145,7 @@ export function parseCode(code: string, databaseType: DatabaseType): {
     while ((tableMatch = tableRegex.exec(code)) !== null) {
         const tableName = tableMatch[1];
         const fieldsBlock = tableMatch[2];
-        const fieldRegex = /^\s*(\w+)\s+([\w()]+)(?:\s+\[(.*?)\])?$/gm;
+        const fieldRegex = /^\s*(\w+)\s+([\w()]+)(?:\s+(\[.*?\]))?$/gm;
         let fieldMatch: RegExpExecArray | null;
         const fields: ParsedField[] = [];
 
@@ -121,8 +153,9 @@ export function parseCode(code: string, databaseType: DatabaseType): {
             const fieldName = fieldMatch[1];
             const fieldTypeName = fieldMatch[2];
             const modifiers = fieldMatch[3] || '';
-            const primaryKey = /\bprimary key\b/i.test(modifiers);
-            const unique = /\bunique\b/i.test(modifiers);
+            const primaryKey = /\[primary key\]/i.test(modifiers) || /\[pk\]/i.test(modifiers);
+            const unique = /\[unique\]/i.test(modifiers);
+			const note = /\[note: ["'](.*?)["']\]/i.exec(modifiers)
 
             let dataType: DBDataType = {
                 id: fieldTypeName.toLowerCase(),
@@ -141,13 +174,41 @@ export function parseCode(code: string, databaseType: DatabaseType): {
                 type: dataType,
                 primaryKey,
                 unique,
+				note: (note?.length ?? 0) > 0 ? note?.[1] : undefined,
             });
         }
+
+		const parsedIndexes: ParsedIndex[] = [];
+
+		const indexesBlock = /Indexes\s*{\s*([^}]*)/g.exec(fieldsBlock)
+
+		if (indexesBlock != null) {
+			const indexes = indexesBlock[1].split('\n').map((i) => i.trim()).filter((i) => i.length > 0);
+
+			for (const index of indexes) {
+				const indexMatch = index.match(/\((.*)\)\s?(.*)?/);
+
+				if (indexMatch) {
+					const indexFields = indexMatch[1].split(",").map((f) => f.trim())
+					const modifiers = indexMatch[2]
+
+					const unique = /\[unique\]/i.test(modifiers);
+					const name = /\[name: ["'](.*?)["']\]/i.exec(modifiers)		
+
+					parsedIndexes.push({
+						name: name?.[1] ?? indexFields.join('_'),
+						unique: unique,
+						fields: indexFields,
+					})
+				}
+			}
+		}
 
         parsedTables.push({
             name: tableName,
             contentHash: stringHashCode(fields.map((f) => f.name).sort().join(':')),
             fields,
+			indexes: parsedIndexes
         });
     }
 

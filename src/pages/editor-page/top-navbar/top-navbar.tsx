@@ -130,7 +130,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = () => {
                                     <a
                                         href="https://github.com/chartdb/chartdb"
                                         target="_blank"
-                                        className="text-pink-600 hover:underline"
+                                        className="text-blue-600 hover:underline"
                                         rel="noreferrer"
                                     >
                                         here.
