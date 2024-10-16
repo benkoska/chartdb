@@ -330,7 +330,7 @@ export const CodeSection: React.FC<CodeSectionProps> = () => {
         monaco?.editor?.setTheme?.(effectiveTheme);
     }, [monaco, effectiveTheme]);
 
-    const handleEditorDidMount: OnMount = useCallback((editor, monaco) => {
+    const handleEditorDidMount: OnMount = useCallback((_, monaco) => {
         if (monaco.languages.getLanguages().some(({ id }) => id === 'dbml'))
             return;
 
