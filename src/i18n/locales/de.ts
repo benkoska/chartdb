@@ -189,6 +189,9 @@ export const de: LanguageTranslation = {
                     description: 'Create a view to get started',
                 },
             },
+            code_section: {
+                code: 'Code',
+            },
         },
 
         toolbar: {
